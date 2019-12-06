@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-@RestController("api")
+@RestController
 public class RestControllerTest {
 	
 	static final Logger logger = LoggerFactory.getLogger(RestControllerTest.class);
 	
-	@PostMapping("/without-request-header-token")
+	@PostMapping("/api-test/without-request-header-token")
 	public ResponseEntity<String> testWithoutRequestToken(@RequestBody Message in) {
 		
 		logger.info("Start API test (without request header token)");
@@ -48,7 +48,7 @@ public class RestControllerTest {
 		}
 	}
 	
-	@PostMapping("/with-request-header-token")
+	@PostMapping("/api-test/with-request-header-token")
 	public ResponseEntity<String> testWithRequestToken(@RequestHeader("Authorization") String authHeader, @RequestBody Message in) {
 		
 		logger.info("Start API test (with request header token)");

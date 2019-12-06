@@ -21,15 +21,21 @@ public class ClientApiTest {
 		Message in = new Message();
 		in.setMessage("Hello!");
 		
+		/*
+		 * KO
+		 */
 		try {
 			HttpEntity<Message> request = new HttpEntity<Message>(in);
-			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7090/api/without-request-header-token", request, String.class);
+			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7090/api/api-test/without-request-header-token", request, String.class);
 			logger.debug(r.getBody());
 			
 		} catch (Exception e) {
-			logger.error("/api/test/without-request-header-token - {}", e);
+			logger.error("/api/api-test/without-request-header-token - {}", e);
 		}
 		
+		/*
+		 * KO
+		 */
 		try {
 			char[] chars = new char[1000000];
 			Arrays.fill(chars, 'a');
@@ -38,11 +44,42 @@ public class ClientApiTest {
 			HttpHeaders h = new HttpHeaders();
 			h.add("Authorization", authHeader);
 			HttpEntity<Message> request = new HttpEntity<Message>(in, h);
-			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7090/api/with-request-header-token", request, String.class);
+			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7090/api/api-test/with-request-header-token", request, String.class);
 			logger.debug(r.getBody());
 
 		} catch (Exception e) {
-			logger.error("/api/test/with-request-header-token - {}", e);
+			logger.error("/api/api-test/with-request-header-token - {}", e);
+
+		}
+		
+		/*
+		 * OK
+		 */
+		try {
+			HttpEntity<Message> request = new HttpEntity<Message>(in);
+			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7091/api-test/without-request-header-token", request, String.class);
+			logger.debug(r.getBody());
+			
+		} catch (Exception e) {
+			logger.error("/api/without-request-header-token - {}", e);
+		}
+		
+		/*
+		 * OK
+		 */
+		try {
+			char[] chars = new char[1000000];
+			Arrays.fill(chars, 'a');
+			String str = new String(chars);
+			String authHeader = "Bearer: " + new String(str);
+			HttpHeaders h = new HttpHeaders();
+			h.add("Authorization", authHeader);
+			HttpEntity<Message> request = new HttpEntity<Message>(in, h);
+			ResponseEntity<String> r = restTemplate.postForEntity("http://localhost:7091/api-test/with-request-header-token", request, String.class);
+			logger.debug(r.getBody());
+
+		} catch (Exception e) {
+			logger.error("/api/with-request-header-token - {}", e);
 
 		}
 	}
